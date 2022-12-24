@@ -1,14 +1,14 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
       "@app/*": ["app/*"],
-      "@constants/*": ["app/shared/constants/*"],
+      "@core/*": ["app/_core/*"],
       "@env": ["environments/environment"],
+      "@auth/*": ["app/auth/*"],
       "@main/*": ["app/main/*"],
-      "@shared/*": ["app/shared/*"]
+      "@shared/*": ["app/shared/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -23,10 +23,11 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2017",
-    "module": "es2020",
+    "target": "es2022",
+    "module": "es2022",
+    "useDefineForClassFields": false,
     "lib": [
-      "es2020",
+      "es2022",
       "dom"
     ]
   },

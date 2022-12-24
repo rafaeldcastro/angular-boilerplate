@@ -1,37 +1,44 @@
-// @ts-strict-ignore
 import { Injectable } from "@angular/core";
 
+/*MODELS*/
+import { environment as env } from "@env";
+
 @Injectable({
-    providedIn: "root",
+  providedIn: "root",
 })
 export class DarkModeService {
+  private darkModeCssClass: string = "dark";
+  private darkModeStorageKey: string = `${env.APP_PREFIX}-IS-DARKMODE`;
 
-    isDarkMode(): boolean{
+  checkUserPref() {
+    try {
+      const isDarkMode: boolean = JSON.parse(
+        localStorage.getItem(this.darkModeStorageKey) || ""
+      );
+      if (isDarkMode) {
         const body = this.getBodyElement();
-        return body.classList.contains('dark');
-    }
+        body.classList.add("dark");
+      }
+    } catch (error) {}
+  }
 
-    toggleDarkMode(){
-        
-        if(this.isDarkMode()){
-            this.leaveDarkMode();
-        } else {
-            this.enterDarkMode();
-        }
-    }
+  isDarkMode(): boolean {
+    const body = this.getBodyElement();
+    return body.classList.contains(this.darkModeCssClass);
+  }
 
-    enterDarkMode(){
-        const body = this.getBodyElement();
-        body.classList.add('dark');
-    }
+  toggleDarkMode() {
+    const body = this.getBodyElement();
+    body.classList.toggle(this.darkModeCssClass);
 
-    leaveDarkMode(){
-        const body = this.getBodyElement();
-        body.classList.remove('dark');
-    }
+    const isDarkMode = this.isDarkMode();
+    localStorage.setItem(
+      `${this.darkModeStorageKey}`,
+      JSON.stringify(isDarkMode)
+    );
+  }
 
-    private getBodyElement(): any {
-        return document.querySelector('body');
-    }
-
+  private getBodyElement(): any {
+    return document.querySelector("body");
+  }
 }

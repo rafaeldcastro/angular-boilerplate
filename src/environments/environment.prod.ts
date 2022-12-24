@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  APP_PREFIX: "MYAPP",
+  URL_API: "",
+  production: true,
 };

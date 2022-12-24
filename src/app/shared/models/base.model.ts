@@ -1,12 +1,11 @@
 export class BaseModel {
+  any?: any;
 
-    any: any;
+  constructor(data?: Partial<BaseModel>) {
+    if (data) Object.assign(this, JSON.parse(JSON.stringify(data)));
+  }
 
-    constructor(data: Partial<BaseModel>) {
-        this.factory(data);
-    }
-
-    private factory(object: Partial<BaseModel>) {
-        Object.assign(this, JSON.parse(JSON.stringify(object)));
-    }
+  static factory(data: Partial<BaseModel>): Partial<BaseModel> {
+    return new BaseModel(data);
+  }
 }
