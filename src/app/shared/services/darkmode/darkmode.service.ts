@@ -7,38 +7,28 @@ import { environment as env } from "@env";
   providedIn: "root",
 })
 export class DarkModeService {
-  private darkModeCssClass: string = "dark";
-  private darkModeStorageKey: string = `${env.APP_PREFIX}-IS-DARKMODE`;
+  private darkModeKey: string = `${env.APP_PREFIX}-IS-DARKMODE`;
 
-  checkUserPref() {
-    try {
-      const isDarkMode: boolean = JSON.parse(
-        localStorage.getItem(this.darkModeStorageKey) || ""
-      );
-      if (isDarkMode) {
-        const body = this.getBodyElement();
-        body.classList.add("dark");
-      }
-    } catch (error) {}
+  constructor() {}
+
+  isDarkModeEnabled(): boolean {
+    const darkModeSetting = localStorage.getItem(this.darkModeKey);
+    if (darkModeSetting !== null) {
+      return darkModeSetting === "true";
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
   }
 
-  isDarkMode(): boolean {
-    const body = this.getBodyElement();
-    return body.classList.contains(this.darkModeCssClass);
+  enableDarkMode(): void {
+    localStorage.setItem(this.darkModeKey, "true");
   }
 
-  toggleDarkMode() {
-    const body = this.getBodyElement();
-    body.classList.toggle(this.darkModeCssClass);
-
-    const isDarkMode = this.isDarkMode();
-    localStorage.setItem(
-      `${this.darkModeStorageKey}`,
-      JSON.stringify(isDarkMode)
-    );
+  disableDarkMode(): void {
+    localStorage.setItem(this.darkModeKey, "false");
   }
 
-  private getBodyElement(): any {
-    return document.querySelector("body");
+  toggleDarkMode(): void {
+    document.body.classList.toggle("dark", this.isDarkModeEnabled());
   }
 }
